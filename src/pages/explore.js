@@ -1,7 +1,8 @@
 import React from "react";
+import Layout from "../components/shared/Layout";
 
 function ExplorePage() {
-  return <div>ExplorePage</div>;
+  return <Layout>Explore page</Layout>;
 }
 
 export default ExplorePage;
