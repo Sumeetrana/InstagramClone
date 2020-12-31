@@ -8,7 +8,7 @@ function FollowButton({ side }) {
 
   const followButton = (
     <Button
-      variant={side ? "text" : "container"}
+      variant={side ? "text" : "contained"}
       color="primary"
       className={classes.button}
       onClick={() => setFollowing(true)}

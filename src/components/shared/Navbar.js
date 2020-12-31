@@ -24,6 +24,7 @@ import {
 } from "../../icons";
 import NotificationTooltip from "../notification/NotificationTooltip";
 import { defaultCurrentUser, getDefaultUser } from "../../data";
+import NotificationList from "../notification/NotificationList";
 
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -156,6 +157,7 @@ function Links({ path }) {
 
   return (
     <div className={classes.linksContainer}>
+      {showList && <NotificationList />}
       <div className={classes.linksWrapper}>
         <Hidden xsDown>
           <AddIcon />
