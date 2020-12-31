@@ -7,9 +7,17 @@ import {
   ShareIcon,
   UnlikeIcon,
   LikeIcon,
+  RemoveIcon,
+  SaveIcon,
 } from "../../icons";
 import { Link } from "react-router-dom";
-import { Button, Divider, Hidden, Typography } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  Hidden,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
 
 function FeedPost({ post }) {
@@ -101,14 +109,14 @@ function FeedPost({ post }) {
               </Link>
             </div>
           ))}
-          <Typography color="textSecondary" lassName={classes.datePosted}>
+          <Typography color="textSecondary" className={classes.datePosted}>
             5 DAYS AGO
           </Typography>
-          <Hidden xsDown>
-            <Divider />
-            <Comment />
-          </Hidden>
         </div>
+        <Hidden xsDown>
+          <Divider />
+          <Comment />
+        </Hidden>
       </article>
     </>
   );
@@ -135,11 +143,54 @@ function LikeButton() {
 }
 
 function SaveButton() {
-  return <>SaveButton</>;
+  const classes = useFeedPostStyles();
+  const [saved, setSaved] = React.useState(false);
+  const Icon = saved ? RemoveIcon : SaveIcon;
+  const onClick = saved ? handleRemove : handleSaved;
+
+  function handleSaved() {
+    console.log("save");
+    setSaved(true);
+  }
+
+  function handleRemove() {
+    console.log("remove");
+    setSaved(false);
+  }
+
+  return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
 function Comment() {
-  return <>Comment</>;
+  const classes = useFeedPostStyles();
+  const [content, setContent] = useState("");
+  return (
+    <div className={classes.commentContainer}>
+      <TextField
+        fullWidth
+        value={content}
+        placeholder="Add a comment..."
+        multiline
+        rowsMax={2}
+        rows={1}
+        onChange={(event) => setContent(event.target.value)}
+        className={classes.textField}
+        InputProps={{
+          classes: {
+            root: classes.root,
+            underline: classes.underline,
+          },
+        }}
+      />
+      <Button
+        color="primary"
+        className={classes.commentButton}
+        disabled={!content.trim()}
+      >
+        Post
+      </Button>
+    </div>
+  );
 }
 
 export default FeedPost;
