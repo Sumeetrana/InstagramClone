@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { useFeedPostStyles } from "../../styles";
 import UserCard from "../shared/UserCard";
-import { CommentIcon, MoreIcon, ShareIcon } from "../../icons";
+import {
+  CommentIcon,
+  MoreIcon,
+  ShareIcon,
+  UnlikeIcon,
+  LikeIcon,
+} from "../../icons";
 import { Link } from "react-router-dom";
 import { Button, Divider, Hidden, Typography } from "@material-ui/core";
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
@@ -24,7 +30,7 @@ function FeedPost({ post }) {
           <img src={media} alt="Post media" className={classes.image} />
         </div>
         {/* Feed Post Buttons */}
-        <div className={classes.postButtonWrapper}>
+        <div className={classes.postButtonsWrapper}>
           <div className={classes.postButtons}>
             <LikeButton />
             <Link to={`/p/${id}`}>
@@ -109,7 +115,23 @@ function FeedPost({ post }) {
 }
 
 function LikeButton() {
-  return <>LikeButton</>;
+  const classes = useFeedPostStyles();
+  const [liked, setLiked] = React.useState(false);
+  const Icon = liked ? UnlikeIcon : LikeIcon;
+  const className = liked ? classes.liked : classes.like;
+  const onClick = liked ? handleUnlike : handleLike;
+
+  function handleLike() {
+    console.log("like");
+    setLiked(true);
+  }
+
+  function handleUnlike() {
+    console.log("unlike");
+    setLiked(false);
+  }
+
+  return <Icon className={className} onClick={onClick} />;
 }
 
 function SaveButton() {
