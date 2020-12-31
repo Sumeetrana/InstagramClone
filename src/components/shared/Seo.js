@@ -6,6 +6,7 @@ function SEO({ title }) {
   return (
     <Helmet>
       <title>{titleText}</title>
+      {/* Can put meta tag, keywords, descriptions also inside here */}
     </Helmet>
   );
 }
