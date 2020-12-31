@@ -20,12 +20,12 @@ function FollowButton({ side }) {
 
   const followingButton = (
     <Button
-      variant={side ? "outlined" : "text"}
+      variant={side ? "text" : "outlined"}
       className={classes.button}
       onClick={() => setFollowing(false)}
       fullWidth
     >
-      following
+      Following
     </Button>
   );
 
