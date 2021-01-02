@@ -19,11 +19,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
+import FollowSuggestions from "../shared/FollowSuggestions";
 
-function FeedPost({ post }) {
+function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const [showCaption, setShowCaption] = useState(false);
   const { media, id, likes, user, caption, comments } = post;
+  const showFollowSuggestions = index === 1;
 
   return (
     <>
@@ -118,6 +120,7 @@ function FeedPost({ post }) {
           <Comment />
         </Hidden>
       </article>
+      {showFollowSuggestions && <FollowSuggestions />}
     </>
   );
 }
