@@ -129,7 +129,9 @@ function FeedPost({ post, index }) {
         </Hidden>
       </article>
       {showFollowSuggestions && <FollowSuggestions />}
-      {showOptionsDialog && <OptionsDialog />}
+      {showOptionsDialog && (
+        <OptionsDialog onClose={() => setShowOptionsDialog(false)} />
+      )}
     </>
   );
 }
