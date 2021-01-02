@@ -28,7 +28,7 @@ function ProfilePage() {
           <Card className={classes.cardSmall}>
             <CardContent>
               <section className={classes.sectionSmall}>
-                <ProfilePicture isOwner={isOwner} />
+                <ProfilePicture size={77} isOwner={isOwner} />
                 <ProfileNameSection />
               </section>
               <NameBioSection />
