@@ -5,7 +5,6 @@ import { defaultCurrentUser } from "../data";
 import {
   Avatar,
   Button,
-  ButtonBase,
   Card,
   CardContent,
   Dialog,
@@ -18,7 +17,6 @@ import {
 import ProfilePicture from "../components/shared/ProfilePicture";
 import { GearIcon } from "../icons";
 import { Link } from "react-router-dom";
-import { TramRounded } from "@material-ui/icons";
 
 function ProfilePage() {
   const isOwner = false;
@@ -84,7 +82,7 @@ function ProfileNameSection({ user, isOwner, handleOptionsMenuClick }) {
   if (isFollowing) {
     followButton = (
       <Button
-        onClick={() => setUnfollowDialog(TramRounded)}
+        onClick={() => setUnfollowDialog(true)}
         variant="outlined"
         className={classes.button}
       >
