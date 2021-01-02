@@ -735,7 +735,7 @@ export const usePostStyles = makeStyles((theme) => ({
   },
   article: {
     display: "flex",
-    border: "1px solid rgba(var(--b6a,219,219,219),1)",
+    // border: "1px solid rgba(var(--b6a,219,219,219),1)",
     borderBottomRightRadius: "3px",
     borderTopRightRadius: "3px",
     position: "relative",
