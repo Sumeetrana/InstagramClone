@@ -28,16 +28,17 @@ function FollowSuggestions() {
         <Slick
           className={classes.slide}
           dots={false}
-          infinite
+          infinite={true}
           speed={1000}
-          touchThresold={1000}
+          touchThresold={500}
           variableWidth
           swipeToSlide
           arrows
-          slidesToScroll={3}
+          slidesToScroll={2}
+          slidesToShow={2}
           easing="ease-in-out"
         >
-          {Array.from({ length: 10 }, () => getDefaultUser()).map((user) => (
+          {Array.from({ length: 12 }, () => getDefaultUser()).map((user) => (
             <FollowSuggestionsItem key={user.id} user={user} />
           ))}
         </Slick>
