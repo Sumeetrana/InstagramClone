@@ -3,12 +3,14 @@ import { useProfilePageStyles } from "../styles";
 import Layout from "../components/shared/Layout";
 import { defaultCurrentUser } from "../data";
 import {
+  Avatar,
   Button,
   ButtonBase,
   Card,
   CardContent,
   Dialog,
   DialogTitle,
+  Divider,
   Hidden,
   Typography,
   Zoom,
@@ -16,6 +18,7 @@ import {
 import ProfilePicture from "../components/shared/ProfilePicture";
 import { GearIcon } from "../icons";
 import { Link } from "react-router-dom";
+import { TramRounded } from "@material-ui/icons";
 
 function ProfilePage() {
   const isOwner = false;
@@ -73,13 +76,18 @@ function ProfilePage() {
 
 function ProfileNameSection({ user, isOwner, handleOptionsMenuClick }) {
   const classes = useProfilePageStyles();
+  const [showUnfollowDialog, setUnfollowDialog] = React.useState(false);
 
   let followButton;
   const isFollowing = true;
   const isFollower = false;
   if (isFollowing) {
     followButton = (
-      <Button variant="outlined" className={classes.button}>
+      <Button
+        onClick={() => setUnfollowDialog(TramRounded)}
+        variant="outlined"
+        className={classes.button}
+      >
         Following
       </Button>
     );
@@ -144,7 +152,42 @@ function ProfileNameSection({ user, isOwner, handleOptionsMenuClick }) {
           )}
         </section>
       </Hidden>
+      {showUnfollowDialog && (
+        <UnfollowDialog user={user} onClose={() => setUnfollowDialog(false)} />
+      )}
     </>
+  );
+}
+
+function UnfollowDialog({ user, onClose }) {
+  const classes = useProfilePageStyles();
+
+  return (
+    <Dialog
+      open
+      classes={{
+        scrollPaper: classes.unfollowDialogScrollPaper,
+      }}
+      onClose
+      TransitionComponent={Zoom}
+    >
+      <div className={classes.wrapper}>
+        <Avatar
+          src={user.profile_image}
+          alt={`${user.username}'s avatar`}
+          className={classes.avatar}
+        />
+      </div>
+      <Typography align="center" className={classes.unfollowDialogText}>
+        Unfollow @{user.username}
+      </Typography>
+      <Divider />
+      <Button className={classes.unfollowButton}>Unfollow</Button>
+      <Divider />
+      <Button className={classes.cancelButton} onClick={onClose}>
+        Cancel
+      </Button>
+    </Dialog>
   );
 }
 
