@@ -8,19 +8,20 @@ import {
   List,
   ListItem,
   ListItemText,
-  Menu,
 } from "@material-ui/core";
+import { Menu } from "@material-ui/icons";
+import { defaultCurrentUser } from "../data";
 
 function EditProfilePage({ history }) {
   const classes = useEditProfilePageStyles();
   const [showDrawer, setDrawer] = React.useState(false);
+  const path = history.location.pathname;
 
   function handleToggleDrawer() {
     setDrawer((prev) => !prev);
   }
 
   function handleSelected(index) {
-    const path = history.location.pathname;
     switch (index) {
       case 0:
         return path.includes("edit");
@@ -92,10 +93,33 @@ function EditProfilePage({ history }) {
               {drawer}
             </Drawer>
           </Hidden>
+          <Hidden
+            xsDown
+            implementation="css"
+            className={classes.permanentDrawerRoot}
+          >
+            <Drawer
+              variant="permanent"
+              open
+              classes={{
+                paper: classes.permanentDrawerPaper,
+                root: classes.permanentDrawerRoot,
+              }}
+            >
+              {drawer}
+            </Drawer>
+          </Hidden>
         </nav>
+        <main>
+          {path.includes("edit") && <EditUserInfo user={defaultCurrentUser} />}
+        </main>
       </section>
     </Layout>
   );
+}
+
+function EditUserInfo({ user }) {
+  return <>EditUserInfo</>;
 }
 
 export default EditProfilePage;
