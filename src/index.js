@@ -9,15 +9,15 @@ import AuthProvider from "./auth";
 import client from "./graphql/client";
 
 ReactDOM.render(
-  <AuthProvider>
-    <ApolloProvider client={client}>
+  <ApolloProvider client={client}>
+    <AuthProvider>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         <Router>
           <App />
         </Router>
       </MuiThemeProvider>
-    </ApolloProvider>
-  </AuthProvider>,
+    </AuthProvider>
+  </ApolloProvider>,
   document.getElementById("root")
 );

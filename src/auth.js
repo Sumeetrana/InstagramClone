@@ -17,6 +17,7 @@ firebase.initializeApp({
   messagingSenderId: "362247530479",
   appId: "1:362247530479:web:2e78e1e07cc8e9fbbbf81a",
   measurementId: "G-4PPCBES5N5",
+  databaseURL: "https://reactagram-28-default-rtdb.firebaseio.com/",
 });
 
 export const AuthContext = React.createContext();
@@ -73,7 +74,7 @@ export default function AuthProvider({ children }) {
         website: "",
         profileImage: defaultUserImage,
       };
-      await createUser({ variables };
+      await createUser({ variables });
     }
   }
 
@@ -92,6 +93,7 @@ export default function AuthProvider({ children }) {
           authState,
           signInWithGoogle,
           signOut,
+          signUpWithEmailAndPassword,
         }}
       >
         {children}
