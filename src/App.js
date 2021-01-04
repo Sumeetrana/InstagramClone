@@ -1,5 +1,11 @@
 import React from "react";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  useHistory,
+  useLocation,
+} from "react-router-dom";
 import FeedPage from "./pages/feed";
 import ProfilePage from "./pages/profile";
 import PostPage from "./pages/post";
@@ -13,7 +19,7 @@ import { AuthContext } from "./auth";
 
 function App() {
   const { authState } = React.useContext(AuthContext);
-  console.log(authState);
+  const isAuth = authState.status === "in";
   const history = useHistory();
   const location = useLocation();
   const prevLocation = React.useRef(location);
@@ -26,6 +32,16 @@ function App() {
   }, [location, modal, history.action]);
 
   const isModalOpen = modal && prevLocation.current !== location;
+
+  if (!isAuth) {
+    return (
+      <Switch>
+        <Route path="/accounts/login" component={LoginPage} />
+        <Route path="/accounts/emailsignup" component={SignupPage} />
+        <Redirect to="/accounts/login" />
+      </Switch>
+    );
+  }
 
   return (
     <>
