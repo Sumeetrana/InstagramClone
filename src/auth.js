@@ -55,6 +55,12 @@ export default function AuthProvider({ children }) {
     await firebase.auth().signInWithPopup(provider);
   }
 
+  async function signUpWithEmailAndPassword(formData) {
+    const data = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(formData.email, formData.password);
+  }
+
   async function signOut() {
     setAuthState({ status: "loading" });
     await firebase.auth().signOut();
