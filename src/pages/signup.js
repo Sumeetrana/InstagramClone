@@ -19,7 +19,7 @@ import isEmail from "validator/lib/isEmail";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState } = useForm({ mode: "onChange" });
   const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
   // const [values, setValues] = React.useState({
   //   email: "",
@@ -126,6 +126,7 @@ function SignUpPage() {
                 autoComplete="new-password"
               />
               <Button
+                disabled={!formState.isValid || formState.isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
