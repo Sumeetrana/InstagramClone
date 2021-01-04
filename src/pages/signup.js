@@ -21,6 +21,7 @@ import { CheckCircleOutline, HighlightOff } from "@material-ui/icons";
 
 function SignUpPage() {
   const classes = useSignUpPageStyles();
+  const [error, setError] = React.useState("");
   const { register, handleSubmit, formState, errors } = useForm({
     mode: "all",
   });
@@ -45,8 +46,22 @@ function SignUpPage() {
   // }
 
   async function onSubmit(data) {
-    await signUpWithEmailAndPassword(data);
-    history.push("/");
+    try {
+      setError("");
+      await signUpWithEmailAndPassword(data);
+      history.push("/");
+    } catch (error) {
+      console.error("Error signin ", error);
+      handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.message.includes("users_username_key")) {
+      setError("Username already exists");
+    } else if (error.code.includes("auth")) {
+      setError(error.message);
+    }
   }
 
   const errorIcon = (
@@ -147,7 +162,6 @@ function SignUpPage() {
                 inputRef={register({
                   required: true,
                   minLength: 5,
-                  maxLength: 20,
                 })}
                 InputProps={{
                   endAdornment: errors.password
@@ -173,6 +187,7 @@ function SignUpPage() {
                 Sign Up
               </Button>
             </form>
+            {error && <AuthError error={error} />}
           </Card>
           <Card className={classes.loginCard}>
             <Typography align="right" variant="body2">
@@ -187,6 +202,21 @@ function SignUpPage() {
         </article>
       </section>
     </>
+  );
+}
+
+export function AuthError({ error }) {
+  return (
+    Boolean(error) && (
+      <Typography
+        align="center"
+        gutterBottom
+        variant="body2"
+        style={{ color: "red" }}
+      >
+        {error}
+      </Typography>
+    )
   );
 }
 
