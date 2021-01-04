@@ -15,6 +15,9 @@ import FacebookIconWhite from "../images/facebook-icon-white.png";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../auth";
 import { useHistory } from "react-router-dom";
+import { useApolloClient } from "@apollo/react-hooks";
+import isEmail from "validator/lib/isEmail";
+import { GET_USER_EMAIL } from "../graphql/queries";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
@@ -23,10 +26,26 @@ function LoginPage() {
   const { register, handleSubmit, watch, formState } = useForm({ mode: "all" });
   const hasPassword = watch("password");
   const history = useHistory();
+  const client = useApolloClient();
 
   async function onSubmit(data) {
+    if (!isEmail(data.input)) {
+      data.input = await getUserEmail(data.input);
+      // console.log(data.input);
+    }
+
     await logInWithEmailAndPassword(data.input, data.password);
-    history.push("/");
+    setTimeout(() => history.push("/"), 10);
+  }
+
+  async function getUserEmail(input) {
+    const response = await client.query({
+      query: GET_USER_EMAIL,
+      variables: { input },
+    });
+    const userEmail = response.data.users[0]?.email || "no@email.com";
+    // console.log(userEmail);
+    return userEmail;
   }
 
   function togglePassword() {
