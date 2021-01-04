@@ -16,8 +16,9 @@ import {
 } from "@material-ui/core";
 import ProfilePicture from "../components/shared/ProfilePicture";
 import { GearIcon } from "../icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import ProfileTabs from "../components/profile/ProfileTabs";
+import { AuthContext } from "../auth";
 
 function ProfilePage() {
   const isOwner = true;
@@ -240,10 +241,16 @@ function NameBioSection({ user }) {
 
 function OptionsMenu({ handleCloseMenu }) {
   const classes = useProfilePageStyles();
+  const { signOut } = React.useContext(AuthContext);
   const [showLogoutMessage, setLogoutMessage] = React.useState(false);
+  const history = useHistory();
 
   function handleLogoutClick() {
     setLogoutMessage(true);
+    setTimeout(() => {
+      signOut();
+      history.push("/accounts/login");
+    }, 2000);
   }
 
   return (
