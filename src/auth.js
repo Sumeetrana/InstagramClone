@@ -7,6 +7,7 @@ import { CREATE_USER } from "./graphql/mutations";
 import defaultUserImage from "./images/default-user-image.jpg";
 
 const provider = new firebase.auth.GoogleAuthProvider();
+const facebookProvider = new firebase.auth.FacebookAuthProvider();
 
 // Find these options in your Firebase console
 firebase.initializeApp({
@@ -66,6 +67,11 @@ export default function AuthProvider({ children }) {
     await firebase.auth().signInWithPopup(provider);
   }
 
+  async function loginWithFacebook() {
+    const data = await firebase.auth().signInWithPopup(facebookProvider);
+    console.log(data);
+  }
+
   async function signUpWithEmailAndPassword(formData) {
     const data = await firebase
       .auth()
@@ -98,6 +104,7 @@ export default function AuthProvider({ children }) {
       <AuthContext.Provider
         value={{
           authState,
+          loginWithFacebook,
           signInWithGoogle,
           signOut,
           signUpWithEmailAndPassword,

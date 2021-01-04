@@ -154,19 +154,38 @@ function LoginPage() {
 
 export function LoginWithFacebook({ color, iconColor, variant }) {
   const classes = useLoginPageStyles();
+  const { loginWithFacebook } = React.useContext(AuthContext);
+  const [error, setError] = React.useState("");
 
   const facebookIcon =
     iconColor === "blue" ? FacebookIconBlue : FacebookIconWhite;
 
+  async function handleLoginWithFacebook() {
+    try {
+      await loginWithFacebook();
+    } catch (error) {
+      console.error("Error logging in with Facebook ", error);
+      setError(error.message);
+    }
+  }
+
   return (
-    <Button fullWidth color={color} variant={variant}>
-      <img
-        src={facebookIcon}
-        alt="Facebook Icon"
-        className={classes.facebookIcon}
-      />
-      Log In with Facebook
-    </Button>
+    <>
+      <Button
+        fullWidth
+        color={color}
+        variant={variant}
+        onClick={handleLoginWithFacebook}
+      >
+        <img
+          src={facebookIcon}
+          alt="Facebook Icon"
+          className={classes.facebookIcon}
+        />
+        Log In with Facebook
+      </Button>
+      <AuthError error={error} />
+    </>
   );
 }
 
