@@ -1,8 +1,10 @@
+import { useMutation } from "@apollo/react-hooks";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 import React, { useState, useEffect } from "react";
-import App from "./App";
+import { CREATE_USER } from "./graphql/mutations";
+import defaultUserImage from "./images/default-user-image.jpg";
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -21,6 +23,7 @@ export const AuthContext = React.createContext();
 
 export default function AuthProvider({ children }) {
   const [authState, setAuthState] = useState({ status: "loading" });
+  const [createUser] = useMutation(CREATE_USER);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
@@ -59,6 +62,19 @@ export default function AuthProvider({ children }) {
     const data = await firebase
       .auth()
       .createUserWithEmailAndPassword(formData.email, formData.password);
+    if (data.additionalUserInfo.isNewUser) {
+      const variables = {
+        userId: data.user.uid,
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        bio: "",
+        phoneNumber: "",
+        website: "",
+        profileImage: defaultUserImage,
+      };
+      await createUser({ variables };
+    }
   }
 
   async function signOut() {
