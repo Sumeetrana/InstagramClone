@@ -69,7 +69,21 @@ export default function AuthProvider({ children }) {
 
   async function loginWithFacebook() {
     const data = await firebase.auth().signInWithPopup(facebookProvider);
-    console.log(data);
+    if (data.additionalUserInfo.isNewUser) {
+      const { uid, displayName, email, photoURL } = data.user;
+      const username = `${displayName.replace(/\s+/g, "")}${uid.slice(-5)}}`;
+      const variables = {
+        userId: uid,
+        name: displayName,
+        username,
+        email,
+        bio: "",
+        phoneNumber: "",
+        website: "",
+        profileImage: photoURL,
+      };
+      await createUser({ variables });
+    }
   }
 
   async function signUpWithEmailAndPassword(formData) {

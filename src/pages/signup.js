@@ -24,7 +24,9 @@ function SignUpPage() {
   const { register, handleSubmit, formState, errors } = useForm({
     mode: "all",
   });
-  const { signUpWithEmailAndPassword } = React.useContext(AuthContext);
+  const { signUpWithEmailAndPassword, loginWithFacebook } = React.useContext(
+    AuthContext
+  );
   const client = useApolloClient();
   // const [values, setValues] = React.useState({
   //   email: "",
@@ -49,7 +51,7 @@ function SignUpPage() {
     try {
       setError("");
       await signUpWithEmailAndPassword(data);
-      history.push("/");
+      setTimeout(() => history.push("/"), 0);
     } catch (error) {
       console.error("Error signin ", error);
       handleError(error);
@@ -86,6 +88,16 @@ function SignUpPage() {
     </InputAdornment>
   );
 
+  async function handleLoginWithFacebook() {
+    try {
+      await loginWithFacebook();
+      setTimeout(() => history.push("/"), 0);
+    } catch (error) {
+      console.error("Error logging in with Facebook ", error);
+      setError(error.message);
+    }
+  }
+
   return (
     <>
       <SEO title="Sign up" />
@@ -100,6 +112,7 @@ function SignUpPage() {
               color="primary"
               iconColor="white"
               variant="contained"
+              onClick={handleLoginWithFacebook}
             />
             <div className={classes.orContainer}>
               <div className={classes.orLine} />

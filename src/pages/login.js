@@ -156,6 +156,7 @@ export function LoginWithFacebook({ color, iconColor, variant }) {
   const classes = useLoginPageStyles();
   const { loginWithFacebook } = React.useContext(AuthContext);
   const [error, setError] = React.useState("");
+  const history = useHistory();
 
   const facebookIcon =
     iconColor === "blue" ? FacebookIconBlue : FacebookIconWhite;
@@ -163,6 +164,7 @@ export function LoginWithFacebook({ color, iconColor, variant }) {
   async function handleLoginWithFacebook() {
     try {
       await loginWithFacebook();
+      setTimeout(() => history.push("/"), 0);
     } catch (error) {
       console.error("Error logging in with Facebook ", error);
       setError(error.message);
