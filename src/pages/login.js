@@ -13,15 +13,20 @@ import Link from "react-router-dom/Link";
 import FacebookIconBlue from "../images/facebook-icon-blue.svg";
 import FacebookIconWhite from "../images/facebook-icon-white.png";
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../auth";
+import { useHistory } from "react-router-dom";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
   const [showPassword, setShowPassword] = React.useState(false);
+  const { logInWithEmailAndPassword } = React.useContext(AuthContext);
   const { register, handleSubmit, watch, formState } = useForm({ mode: "all" });
   const hasPassword = watch("password");
+  const history = useHistory();
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    await logInWithEmailAndPassword(data.input, data.password);
+    history.push("/");
   }
 
   function togglePassword() {
