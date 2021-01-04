@@ -5,15 +5,28 @@ import {
   Button,
   Card,
   CardHeader,
+  InputAdornment,
   TextField,
   Typography,
 } from "@material-ui/core";
 import Link from "react-router-dom/Link";
 import FacebookIconBlue from "../images/facebook-icon-blue.svg";
 import FacebookIconWhite from "../images/facebook-icon-white.png";
+import { useForm } from "react-hook-form";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
+  const [showPassword, setShowPassword] = React.useState(false);
+  const { register, handleSubmit, watch, formState } = useForm({ mode: "all" });
+  const hasPassword = watch("password");
+
+  function onSubmit(data) {
+    console.log(data);
+  }
+
+  function togglePassword() {
+    setShowPassword((prev) => !prev);
+  }
 
   return (
     <>
@@ -22,25 +35,45 @@ function LoginPage() {
         <article>
           <Card className={classes.card}>
             <CardHeader className={classes.cardHeader} />
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <TextField
+                name="input"
                 fullWidth
+                inputRef={register({
+                  required: true,
+                  minLength: 5,
+                })}
                 variant="filled"
-                label="Username"
+                label="Phone number, username, or email"
                 margin="dense"
                 className={classes.textField}
                 autoComplete="username"
               />
               <TextField
+                name="password"
                 fullWidth
+                inputRef={register({
+                  required: true,
+                  minLength: 5,
+                })}
+                InputProps={{
+                  endAdornment: hasPassword && (
+                    <InputAdornment>
+                      <Button onClick={togglePassword}>
+                        {showPassword ? "Hide" : "Show"}
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
                 variant="filled"
                 label="Password"
                 margin="dense"
                 className={classes.textField}
                 autoComplete="current-password"
-                type="password"
+                type={showPassword ? "text" : "password"}
               />
               <Button
+                disabled={!formState.isValid || formState.isSubmitting}
                 variant="contained"
                 fullWidth
                 color="primary"
