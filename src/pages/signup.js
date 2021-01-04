@@ -4,14 +4,11 @@ import SEO from "../components/shared/Seo";
 import {
   Button,
   Card,
-  CardHeader,
   InputAdornment,
   TextField,
   Typography,
 } from "@material-ui/core";
 import Link from "react-router-dom/Link";
-import FacebookIconBlue from "../images/facebook-icon-blue.svg";
-import FacebookIconWhite from "../images/facebook-icon-white.png";
 import { LoginWithFacebook } from "./login";
 import { AuthContext } from "../auth";
 import { useHistory } from "react-router-dom";

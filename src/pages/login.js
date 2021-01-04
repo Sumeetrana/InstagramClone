@@ -18,10 +18,12 @@ import { useHistory } from "react-router-dom";
 import { useApolloClient } from "@apollo/react-hooks";
 import isEmail from "validator/lib/isEmail";
 import { GET_USER_EMAIL } from "../graphql/queries";
+import { AuthError } from "./signup";
 
 function LoginPage() {
   const classes = useLoginPageStyles();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [error, setError] = React.useState("");
   const { logInWithEmailAndPassword } = React.useContext(AuthContext);
   const { register, handleSubmit, watch, formState } = useForm({ mode: "all" });
   const hasPassword = watch("password");
@@ -29,13 +31,25 @@ function LoginPage() {
   const client = useApolloClient();
 
   async function onSubmit(data) {
-    if (!isEmail(data.input)) {
-      data.input = await getUserEmail(data.input);
-      // console.log(data.input);
-    }
+    try {
+      setError("");
+      if (!isEmail(data.input)) {
+        data.input = await getUserEmail(data.input);
+        // console.log(data.input);
+      }
 
-    await logInWithEmailAndPassword(data.input, data.password);
-    setTimeout(() => history.push("/"), 10);
+      await logInWithEmailAndPassword(data.input, data.password);
+      setTimeout(() => history.push("/"), 10);
+    } catch (error) {
+      console.error("Error signin ", error);
+      handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.code.includes("auth")) {
+      setError(error.message);
+    }
   }
 
   async function getUserEmail(input) {
@@ -117,6 +131,7 @@ function LoginPage() {
               <div className={classes.orLine} />
             </div>
             <LoginWithFacebook color="secondary" iconColor="blue" />
+            <AuthError error={error} />
             <Button fullWidth color="secondary">
               <Typography variant="caption">Forgot Password?</Typography>
             </Button>
