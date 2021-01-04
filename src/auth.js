@@ -55,6 +55,13 @@ export default function AuthProvider({ children }) {
     });
   }, []);
 
+  async function logInWithEmailAndPassword(email, password) {
+    const data = await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password);
+    return data;
+  }
+
   async function signInWithGoogle() {
     await firebase.auth().signInWithPopup(provider);
   }
@@ -94,6 +101,7 @@ export default function AuthProvider({ children }) {
           signInWithGoogle,
           signOut,
           signUpWithEmailAndPassword,
+          logInWithEmailAndPassword,
         }}
       >
         {children}
