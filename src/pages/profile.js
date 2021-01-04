@@ -23,6 +23,7 @@ import { AuthContext } from "../auth";
 function ProfilePage() {
   const isOwner = true;
   const classes = useProfilePageStyles();
+
   const [showOptionMenu, setOptionsMenu] = React.useState(false);
 
   function handleOptionsMenuClick() {
