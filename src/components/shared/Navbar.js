@@ -23,7 +23,7 @@ import {
   HomeActiveIcon,
 } from "../../icons";
 import NotificationTooltip from "../notification/NotificationTooltip";
-import { defaultCurrentUser, getDefaultUser } from "../../data";
+// import { defaultCurrentUser, getDefaultUser } from "../../data";
 import NotificationList from "../notification/NotificationList";
 import { useNProgress } from "@tanem/react-nprogress";
 import { SEARCH_USERS } from "../../graphql/queries";
@@ -202,13 +202,9 @@ function Links({ path }) {
             {showList ? <LikeActiveIcon /> : <LikeIcon />}
           </div>
         </RedTooltip>
-        <Link to={`/${defaultCurrentUser.username}`}>
+        <Link to={`/${me.username}`}>
           <div
-            className={
-              path === `/${defaultCurrentUser.username}`
-                ? classes.profileActive
-                : ""
-            }
+            className={path === `/${me.username}` ? classes.profileActive : ""}
           ></div>
           <Avatar src={me.profile_image} className={classes.profileImage} />
         </Link>
