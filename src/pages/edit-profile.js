@@ -27,6 +27,7 @@ import isEmail from "validator/lib/isEmail";
 import isMobilePhone from "validator/lib/isMobilePhone";
 import { EDIT_USER } from "../graphql/mutations";
 import { AuthContext } from "../auth";
+import handleImageUpload from "../utils/handleImageUpload";
 
 function EditProfilePage({ history }) {
   const { currentUserId } = React.useContext(UserContext);
@@ -172,6 +173,11 @@ function EditUserInfo({ user }) {
     }
   }
 
+  async function handleUpdateProfilePic(event) {
+    const url = await handleImageUpload(event.target.files[0]);
+    console.log(url);
+  }
+
   return (
     <section className={classes.container}>
       <div className={classes.pictureSectionItem}>
@@ -180,13 +186,22 @@ function EditUserInfo({ user }) {
           <Typography className={classes.typography}>
             {user.username}
           </Typography>
-          <Typography
-            color="primary"
-            variant="body2"
-            className={classes.typographyChangePic}
-          >
-            Change Profile Photo
-          </Typography>
+          <input
+            accept="image/*"
+            id="image"
+            type="file"
+            style={{ display: "none" }}
+            onChange={handleUpdateProfilePic}
+          />
+          <label htmlFor="image">
+            <Typography
+              color="primary"
+              variant="body2"
+              className={classes.typographyChangePic}
+            >
+              Change Profile Photo
+            </Typography>
+          </label>
         </div>
       </div>
       <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>

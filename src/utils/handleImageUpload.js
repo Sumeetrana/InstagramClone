@@ -4,7 +4,7 @@ async function handleImageUpload(image) {
   data.append("upload_preset", "reactagram");
   data.append("cloud_name", "dwhrleiox");
   const response = await fetch(
-    "https://api/cloudinary.com/v1_1/dwhrleiox/image/upload",
+    "https://api.cloudinary.com/v1_1/dwhrleiox/image/upload",
     {
       method: "POST",
       accept: "application/json",
