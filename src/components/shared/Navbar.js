@@ -29,6 +29,7 @@ import { useNProgress } from "@tanem/react-nprogress";
 import { SEARCH_USERS } from "../../graphql/queries";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { UserContext } from "../../App";
+import AddPostDialog from "../post/AddPostDialog";
 
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -159,7 +160,10 @@ function Links({ path }) {
   const classes = useNavbarStyles();
   const [showList, setList] = React.useState(false);
   const [showTooltip, setTooltip] = React.useState(true);
+  const [media, setMedia] = React.useState(null);
+  const [showAddPostDialog, setShowAddPostDialog] = React.useState(false);
   const { me } = React.useContext(UserContext);
+  const inputRef = React.useRef();
 
   React.useEffect(() => {
     const timeout = setTimeout(handleHideTooltip, 5000);
@@ -180,12 +184,34 @@ function Links({ path }) {
     setList(false);
   }
 
+  function openFileInput() {
+    inputRef.current.click();
+  }
+
+  function handleAddPost(event) {
+    setMedia(event.target.files[0]);
+    setShowAddPostDialog(true);
+  }
+
+  function handleClose() {
+    setShowAddPostDialog(false);
+  }
+
   return (
     <div className={classes.linksContainer}>
       {showList && <NotificationList handleHideList={handleHideList} />}
       <div className={classes.linksWrapper}>
+        {showAddPostDialog && (
+          <AddPostDialog media={media} handleClose={handleClose} />
+        )}
         <Hidden xsDown>
-          <AddIcon />
+          <input
+            type="file"
+            style={{ display: "none" }}
+            ref={inputRef}
+            onChange={handleAddPost}
+          />
+          <AddIcon onClick={openFileInput} />
         </Hidden>
         <Link to="/">{path === "/" ? <HomeActiveIcon /> : <HomeIcon />}</Link>
         <Link to="/explore">
