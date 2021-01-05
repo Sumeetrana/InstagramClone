@@ -15,8 +15,11 @@ import {
 import { Menu } from "@material-ui/icons";
 import { defaultCurrentUser } from "../data";
 import ProfilePicture from "../components/shared/ProfilePicture";
+import { UserContext } from "../App";
 
 function EditProfilePage({ history }) {
+  const { me, currentUserId } = React.useContext(UserContext);
+  console.log({ me, currentUserId });
   const classes = useEditProfilePageStyles();
   const [showDrawer, setDrawer] = React.useState(false);
   const path = history.location.pathname;
