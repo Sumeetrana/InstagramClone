@@ -11,8 +11,7 @@ const serialize = (node) => {
   switch (node.type) {
     case "paragraph":
       return `${children}<br>`;
-    case "link":
-      return `<a href="${escapeHtml(node.url)}">${children}</a>`;
+
     default:
       return children;
   }
