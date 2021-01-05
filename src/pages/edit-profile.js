@@ -25,7 +25,7 @@ import { useForm } from "react-hook-form";
 import isURL from "validator/lib/isURL";
 import isEmail from "validator/lib/isEmail";
 import isMobilePhone from "validator/lib/isMobilePhone";
-import { EDIT_USER } from "../graphql/mutations";
+import { EDIT_USER, EDIT_USER_AVATAR } from "../graphql/mutations";
 import { AuthContext } from "../auth";
 import handleImageUpload from "../utils/handleImageUpload";
 
@@ -148,9 +148,11 @@ function EditUserInfo({ user }) {
   const classes = useEditProfilePageStyles();
   const { register, handleSubmit } = useForm({ mode: "all" });
   const [editUser] = useMutation(EDIT_USER);
+  const [editUserAvatar] = useMutation(EDIT_USER_AVATAR);
   const { updateEmail } = React.useContext(AuthContext);
   const [error, setError] = React.useState({ type: "", message: "" });
   const [open, setOpen] = React.useState(false);
+  const [profileImage, setProfileImage] = React.useState(user.profile_image);
 
   async function onSubmit(data) {
     try {
@@ -175,13 +177,15 @@ function EditUserInfo({ user }) {
 
   async function handleUpdateProfilePic(event) {
     const url = await handleImageUpload(event.target.files[0]);
-    console.log(url);
+    const variables = { id: user.id, profileImage: url };
+    await editUserAvatar({ variables });
+    setProfileImage(url);
   }
 
   return (
     <section className={classes.container}>
       <div className={classes.pictureSectionItem}>
-        <ProfilePicture size={38} image={user.profile_image} />
+        <ProfilePicture size={38} image={profileImage} />
         <div className={classes.justifySelfStart}>
           <Typography className={classes.typography}>
             {user.username}
