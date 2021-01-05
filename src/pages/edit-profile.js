@@ -16,13 +16,15 @@ import { Menu } from "@material-ui/icons";
 // import { defaultCurrentUser } from "../data";
 import ProfilePicture from "../components/shared/ProfilePicture";
 import { UserContext } from "../App";
-import { useQuery } from "@apollo/react-hooks";
+import { useMutation, useQuery } from "@apollo/react-hooks";
 import { GET_EDIT_USER_PROFILE } from "../graphql/queries";
 import LoadingScreen from "../components/shared/LoadingScreen";
 import { useForm } from "react-hook-form";
 import isURL from "validator/lib/isURL";
 import isEmail from "validator/lib/isEmail";
 import isMobilePhone from "validator/lib/isMobilePhone";
+import { EDIT_USER } from "../graphql/mutations";
+import { AuthContext } from "../auth";
 
 function EditProfilePage({ history }) {
   const { currentUserId } = React.useContext(UserContext);
@@ -142,9 +144,28 @@ function EditProfilePage({ history }) {
 function EditUserInfo({ user }) {
   const classes = useEditProfilePageStyles();
   const { register, handleSubmit } = useForm({ mode: "all" });
+  const [editUser] = useMutation(EDIT_USER);
+  const { updateEmail } = React.useContext(AuthContext);
+  const [error, setError] = React.useState({ type: "", message: "" });
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    try {
+      setError({ type: "", message: "" });
+      const variables = { ...data, id: user.id };
+      await updateEmail(data.email);
+      await editUser({ variables });
+    } catch (error) {
+      console.error("Error updating profile ", error);
+      handleError(error);
+    }
+  }
+
+  function handleError(error) {
+    if (error.message.includes("users_username_key")) {
+      setError({ type: "username", message: "This username is already taken" });
+    } else if (error.code.includes("auth")) {
+      setError({ type: "email", message: error.message });
+    }
   }
 
   return (
@@ -183,6 +204,7 @@ function EditUserInfo({ user }) {
             maxLength: 20,
             pattern: /^[a-zA-Z0-9_.]*/,
           })}
+          error={error}
           text="Username"
           formItem={user.username}
         />
@@ -232,6 +254,7 @@ function EditUserInfo({ user }) {
             required: true,
             validate: (input) => isEmail(input),
           })}
+          error={error}
           text="Email"
           formItem={user.email}
           type="email"
@@ -261,7 +284,7 @@ function EditUserInfo({ user }) {
   );
 }
 
-function SectionItem({ type = "text", text, formItem, inputRef, name }) {
+function SectionItem({ type = "text", text, formItem, inputRef, name, error }) {
   const classes = useEditProfilePageStyles();
 
   return (
@@ -279,6 +302,7 @@ function SectionItem({ type = "text", text, formItem, inputRef, name }) {
       <TextField
         name={name}
         inputRef={inputRef}
+        helperText={error?.type === name && error.message}
         variant="outlined"
         fullWidth
         defaultValue={formItem}

@@ -23,6 +23,7 @@ export const GET_USER_EMAIL = gql`
 export const GET_EDIT_USER_PROFILE = gql`
   query getEditUserProfile($id: uuid!) {
     users_by_pk(id: $id) {
+      id
       email
       bio
       name
