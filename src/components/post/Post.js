@@ -42,9 +42,6 @@ function Post({ postId }) {
   const { data, loading } = useSubscription(GET_POST, { variables });
 
   if (loading) {
-    setTimeout(() => {
-      return <PostSkeleton />;
-    }, 2000);
     return <PostSkeleton />;
   }
   console.log(data);
