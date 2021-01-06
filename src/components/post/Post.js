@@ -80,7 +80,7 @@ function Post({ postId }) {
           <div
             style={{
               overflowY: "scroll",
-              padding: "16px 12px !important",
+              padding: "16px 12px",
               height: "100%",
             }}
           >
@@ -149,7 +149,44 @@ function AuthorCaption({ user, caption, createdAt }) {
   );
 }
 
-function UserComment() {}
+function UserComment({ comment }) {
+  const classes = usePostStyles();
+  return (
+    <div style={{ display: "flex" }}>
+      <Avatar
+        src={comment.user.profile_image}
+        alt="User avatar"
+        style={{ marginRight: "14px", width: "32px", height: "32px" }}
+      />
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Link to={comment.user.username}>
+          <Typography
+            variant="subtitles2"
+            component="span"
+            className={classes.username}
+          >
+            {comment.user.username}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="span"
+            className={classes.postCaption}
+            style={{ paddingLeft: 0 }}
+          >
+            {comment.content}
+          </Typography>
+        </Link>
+        <Typography
+          style={{ marginTop: 16, marginBottom: 4, display: "inline-block" }}
+          color="textSecondary"
+          variant="caption"
+        >
+          {comment.created_at}
+        </Typography>
+      </div>
+    </div>
+  );
+}
 
 function LikeButton() {
   const classes = usePostStyles();
