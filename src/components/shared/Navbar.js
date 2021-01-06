@@ -30,6 +30,7 @@ import { SEARCH_USERS } from "../../graphql/queries";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { UserContext } from "../../App";
 import AddPostDialog from "../post/AddPostDialog";
+import { isAfter } from "date-fns";
 
 function Navbar({ minimalNavbar }) {
   const classes = useNavbarStyles();
@@ -157,12 +158,17 @@ function Search({ history }) {
 }
 
 function Links({ path }) {
+  const { me } = React.useContext(UserContext);
+  const newNotifications = me.notifications.filter(({ created_at }) =>
+    isAfter(new Date(created_at), new Date(me.last_checked))
+  );
+  const hasNotifications = newNotifications.length > 0;
   const classes = useNavbarStyles();
   const [showList, setList] = React.useState(false);
   const [showTooltip, setTooltip] = React.useState(true);
   const [media, setMedia] = React.useState(null);
   const [showAddPostDialog, setShowAddPostDialog] = React.useState(false);
-  const { me } = React.useContext(UserContext);
+  // const { me } = React.useContext(UserContext);
   const inputRef = React.useRef();
 
   React.useEffect(() => {
