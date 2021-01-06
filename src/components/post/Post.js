@@ -41,13 +41,13 @@ function Post({ postId }) {
   const variables = { postId };
   const { data, loading } = useSubscription(GET_POST, { variables });
 
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 2000);
   if (loading) {
+    setTimeout(() => {
+      return <PostSkeleton />;
+    }, 2000);
     return <PostSkeleton />;
   }
-
+  console.log(data);
   const {
     media,
     id,
