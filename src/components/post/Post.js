@@ -36,6 +36,7 @@ import { formateDateToNowShort, formatPostDate } from "../../utils/formateDate";
 
 function Post({ postId }) {
   const classes = usePostStyles();
+
   // const [loading, setLoading] = useState(true);
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
   const variables = { postId };

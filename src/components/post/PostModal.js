@@ -5,11 +5,13 @@ import { usePostModalStyles } from "../../styles";
 import { CloseIcon } from "../../icons";
 import Post from "./Post";
 
-function PostModal() {
+function PostModal(props) {
+  // console.log(props.params.pathId);
   const history = useHistory();
-  const { postId } = useParams();
-  const classes = usePostModalStyles();
 
+  const classes = usePostModalStyles();
+  const { pathId } = useParams();
+  // console.log(pathId);
   return (
     <>
       <Modal
@@ -35,7 +37,7 @@ function PostModal() {
           },
         }}
       >
-        <Post postId={postId} />
+        <Post postId={pathId} />
       </Modal>
       <div onClick={() => history.goBack()} className={classes.close}>
         <CloseIcon />
