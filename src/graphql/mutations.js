@@ -86,17 +86,37 @@ export const CREATE_POST = gql`
 `;
 
 export const LIKE_POST = gql`
-  mutation likePost($postId: uuid!, $userId: uuid!) {
+  mutation likePost($postId: uuid!, $userId: uuid!, $profileId: uuid!) {
     insert_likes(objects: { post_id: $postId, user_id: $userId }) {
+      affected_rows
+    }
+    insert_notifications(
+      objects: {
+        post_id: $postId
+        user_id: $userId
+        profile_id: $profileId
+        type: "like"
+      }
+    ) {
       affected_rows
     }
   }
 `;
 
 export const UNLIKE_POST = gql`
-  mutation deleteLike($postId: uuid!, $userId: uuid!) {
+  mutation deleteLike($postId: uuid!, $userId: uuid!, $profileId: uuid!) {
     delete_likes(
       where: { post_id: { _eq: $postId }, user_id: { _eq: $userId } }
+    ) {
+      affected_rows
+    }
+    delete_notifications(
+      where: {
+        post_id: { _eq: "" }
+        profile_id: { _eq: "" }
+        type: { _eq: "like" }
+        user_id: { _eq: "" }
+      }
     ) {
       affected_rows
     }
@@ -115,6 +135,16 @@ export const UNSAVE_POST = gql`
   mutation unsaveLike($postId: uuid!, $userId: uuid!) {
     delete_saved_posts(
       where: { post_id: { _eq: $postId }, user_id: { _eq: $userId } }
+    ) {
+      affected_rows
+    }
+  }
+`;
+
+export const CREATE_COMMENT = gql`
+  mutation createComment($postId: uuid!, $userId: uuid!, $content: String!) {
+    insert_comments(
+      objects: { content: $content, post_id: $postId, user_id: $userId }
     ) {
       affected_rows
     }

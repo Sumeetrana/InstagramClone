@@ -30,6 +30,7 @@ import {
   UNLIKE_POST,
   SAVE_POST,
   UNSAVE_POST,
+  CREATE_COMMENT,
 } from "../../graphql/mutations";
 
 function Post({ postId }) {
@@ -114,7 +115,7 @@ function Post({ postId }) {
           <Hidden xsDown>
             <div className={classes.comment}>
               <Divider />
-              <Comment />
+              <Comment postId={id} />
             </div>
           </Hidden>
         </div>
@@ -267,9 +268,21 @@ function SaveButton({ postId, savedPosts }) {
   return <Icon className={classes.saveIcon} onClick={onClick} />;
 }
 
-function Comment() {
+function Comment({ postId }) {
   const classes = usePostStyles();
   const [content, setContent] = useState("");
+  const { currentUserId } = React.useContext(UserContext);
+  const [createComment] = useMutation(CREATE_COMMENT);
+
+  function handleSubmit() {
+    const variables = {
+      postId,
+      userId: currentUserId,
+      content,
+    };
+    createComment({ variables });
+    setContent("");
+  }
   return (
     <div className={classes.commentContainer}>
       <TextField
@@ -292,6 +305,7 @@ function Comment() {
         color="primary"
         className={classes.commentButton}
         disabled={!content.trim()}
+        onClick={handleSubmit}
       >
         Post
       </Button>
