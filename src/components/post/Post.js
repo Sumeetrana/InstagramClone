@@ -12,6 +12,7 @@ import {
 } from "../../icons";
 import { Link } from "react-router-dom";
 import {
+  Avatar,
   Button,
   Divider,
   Hidden,
@@ -38,7 +39,15 @@ function Post({ postId }) {
     return <PostSkeleton />;
   }
 
-  const { media, id, likes, user, caption, comments } = data.posts_by_pk;
+  const {
+    media,
+    id,
+    likes,
+    user,
+    caption,
+    comments,
+    created_at,
+  } = data.posts_by_pk;
 
   return (
     <div className={classes.postContainer}>
@@ -68,29 +77,20 @@ function Post({ postId }) {
           <Typography className={classes.likes} variant="subtitle2">
             <span>{likes === 1 ? "1 like" : `${likes} likes`}</span>
           </Typography>
-          <div className={classes.postCaptionContainer}>
-            <Typography
-              variant="body2"
-              component="span"
-              className={classes.postCaption}
-              dangerouslySetInnerHTML={{ __html: caption }}
+          <div
+            style={{
+              overflowY: "scroll",
+              padding: "16px 12px !important",
+              height: "100%",
+            }}
+          >
+            <AuthorCaption
+              user={user}
+              createdAt={created_at}
+              caption={caption}
             />
-
             {comments.map((comment) => (
-              <div key={comment.id}>
-                <Link to={`/${comment.user.username}`}>
-                  <Typography
-                    variant="subtitle2"
-                    component="span"
-                    className={classes.commentUsername}
-                  >
-                    {comment.user.username}
-                  </Typography>{" "}
-                  <Typography variant="body2" component="span">
-                    {comment.content}
-                  </Typography>
-                </Link>
-              </div>
+              <UserComment key={comment.id} comment={comment} />
             ))}
           </div>
           <Typography color="textSecondary" className={classes.datePosted}>
@@ -110,6 +110,46 @@ function Post({ postId }) {
     </div>
   );
 }
+
+function AuthorCaption({ user, caption, createdAt }) {
+  const classes = usePostStyles();
+  return (
+    <div style={{ display: "flex" }}>
+      <Avatar
+        src={user.profile_image}
+        alt="User avatar"
+        style={{ marginRight: "14px", width: "32px", height: "32px" }}
+      />
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <Link to={user.username}>
+          <Typography
+            variant="subtitles2"
+            component="span"
+            className={classes.username}
+          >
+            {user.username}
+          </Typography>
+          <Typography
+            variant="body2"
+            component="span"
+            className={classes.postCaption}
+            style={{ paddingLeft: 0 }}
+            dangerouslySetInnerHTML={{ __html: caption }}
+          />
+        </Link>
+        <Typography
+          style={{ marginTop: 16, marginBottom: 4, display: "inline-block" }}
+          color="textSecondary"
+          variant="caption"
+        >
+          {createdAt}
+        </Typography>
+      </div>
+    </div>
+  );
+}
+
+function UserComment() {}
 
 function LikeButton() {
   const classes = usePostStyles();
