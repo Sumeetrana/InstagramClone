@@ -5,12 +5,22 @@ import { Avatar, Grid, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import FollowButton from "../shared/FollowButton";
 import useOutsideClick from "@rooks/use-outside-click";
+import { useMutation } from "@apollo/react-hooks";
+import { CHECK_NOTIFICATIONS } from "../../graphql/mutations";
 
-function NotificationList({ handleHideList, notifications }) {
+function NotificationList({ handleHideList, notifications, currentUserId }) {
   const listContainerRef = React.useRef();
   const classes = useNotificationListStyles();
-
+  const [checkNotifications] = useMutation(CHECK_NOTIFICATIONS);
   useOutsideClick(listContainerRef, handleHideList);
+
+  React.useEffect(() => {
+    const variables = {
+      userId: currentUserId,
+      lastChecked: new Date().toISOString(),
+    };
+    checkNotifications({ variables });
+  }, [currentUserId, checkNotifications]);
 
   return (
     <Grid ref={listContainerRef} className={classes.listContainer} container>
