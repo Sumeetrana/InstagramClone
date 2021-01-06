@@ -7,6 +7,7 @@ import FollowButton from "../shared/FollowButton";
 import useOutsideClick from "@rooks/use-outside-click";
 import { useMutation } from "@apollo/react-hooks";
 import { CHECK_NOTIFICATIONS } from "../../graphql/mutations";
+import { formateDateToNowShort } from "../../utils/formateDate";
 
 function NotificationList({ handleHideList, notifications, currentUserId }) {
   const listContainerRef = React.useRef();
@@ -47,9 +48,14 @@ function NotificationList({ handleHideList, notifications, currentUserId }) {
                   color="textSecondary"
                   className={classes.typography}
                 >
-                  {isLike && `likes your photo. ${notification.created_at}`}
+                  {isLike &&
+                    `likes your photo. ${formateDateToNowShort(
+                      notification.created_at
+                    )}`}
                   {isFollow &&
-                    `started following you. ${notification.created_at}`}
+                    `started following you. ${formateDateToNowShort(
+                      notification.created_at
+                    )}`}
                 </Typography>
               </div>
             </div>
