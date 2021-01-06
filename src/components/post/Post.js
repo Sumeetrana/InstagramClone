@@ -43,6 +43,8 @@ function Post({ postId }) {
     media,
     id,
     likes,
+    location,
+    likes_aggregate,
     user,
     caption,
     comments,
@@ -54,7 +56,7 @@ function Post({ postId }) {
       <article className={classes.article}>
         {/* post header */}
         <div className={classes.postHeader}>
-          <UserCard user={user} avatarSize={32} />
+          <UserCard user={user} location={location} avatarSize={32} />
           <MoreIcon
             className={classes.moreIcon}
             onClick={() => setShowOptionsDialog(true)}
@@ -75,7 +77,11 @@ function Post({ postId }) {
             <SaveButton />
           </div>
           <Typography className={classes.likes} variant="subtitle2">
-            <span>{likes === 1 ? "1 like" : `${likes} likes`}</span>
+            <span>
+              {likes_aggregate.aggregate.count === 1
+                ? "1 like"
+                : `${likes_aggregate.aggregate.count} likes`}
+            </span>
           </Typography>
           <div
             style={{
