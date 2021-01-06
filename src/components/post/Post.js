@@ -19,21 +19,26 @@ import {
   Typography,
 } from "@material-ui/core";
 import OptionsDialog from "../shared/OptionsDialog";
-import { defaultPost } from "../../data";
+// import { defaultPost } from "../../data";
 import PostSkeleton from "./PostSkeleton";
+import { useSubscription } from "@apollo/react-hooks";
+import { GET_POST } from "../../graphql/subscriptions";
 
-function Post() {
+function Post({ postId }) {
   const classes = usePostStyles();
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
-  const { media, id, likes, user, caption, comments } = defaultPost;
+  const variables = { postId };
+  const { data, loading } = useSubscription(GET_POST, { variables });
 
-  setTimeout(() => {
-    setLoading(false);
-  }, 2000);
+  // setTimeout(() => {
+  //   setLoading(false);
+  // }, 2000);
   if (loading) {
     return <PostSkeleton />;
   }
+
+  const { media, id, likes, user, caption, comments } = data.posts_by_pk;
 
   return (
     <div className={classes.postContainer}>
