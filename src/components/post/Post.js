@@ -218,7 +218,7 @@ function LikeButton({ likes, authorId, postId }) {
   const variables = {
     postId,
     userId: currentUserId,
-    // profileId: authorId
+    profileId: authorId,
   };
 
   function handleLike() {
