@@ -22,8 +22,10 @@ import {
 import OptionsDialog from "../shared/OptionsDialog";
 // import { defaultPost } from "../../data";
 import PostSkeleton from "./PostSkeleton";
-import { useSubscription } from "@apollo/react-hooks";
+import { useMutation, useSubscription } from "@apollo/react-hooks";
 import { GET_POST } from "../../graphql/subscriptions";
+import { UserContext } from "../../App";
+import { LIKE_POST, UNLIKE_POST } from "../../graphql/mutations";
 
 function Post({ postId }) {
   const classes = usePostStyles();
@@ -45,6 +47,8 @@ function Post({ postId }) {
     likes,
     location,
     likes_aggregate,
+    saved_posts,
+    user_id,
     user,
     caption,
     comments,
@@ -69,7 +73,7 @@ function Post({ postId }) {
         {/* Post Buttons */}
         <div className={classes.postButtonsWrapper}>
           <div className={classes.postButtons}>
-            <LikeButton />
+            <LikeButton likes={likes} postId={id} authorId={user.id} />
             <Link to={`/p/${id}`}>
               <CommentIcon />
             </Link>
@@ -194,21 +198,33 @@ function UserComment({ comment }) {
   );
 }
 
-function LikeButton() {
+function LikeButton({ likes, authorId, postId }) {
   const classes = usePostStyles();
-  const [liked, setLiked] = React.useState(false);
+  const { currentUserId } = React.useContext(UserContext);
+  const isAlreadyLiked = likes.some(({ user_id }) => user_id === currentUserId);
+  const [liked, setLiked] = React.useState(isAlreadyLiked);
   const Icon = liked ? UnlikeIcon : LikeIcon;
   const className = liked ? classes.liked : classes.like;
   const onClick = liked ? handleUnlike : handleLike;
+  const [likePost] = useMutation(LIKE_POST);
+  const [unlikePost] = useMutation(UNLIKE_POST);
+
+  const variables = {
+    postId,
+    userId: currentUserId,
+    // profileId: authorId
+  };
 
   function handleLike() {
-    console.log("like");
+    // console.log("like");
     setLiked(true);
+    likePost({ variables });
   }
 
   function handleUnlike() {
-    console.log("unlike");
+    // console.log("unlike");
     setLiked(false);
+    unlikePost({ variables });
   }
 
   return <Icon className={className} onClick={onClick} />;
