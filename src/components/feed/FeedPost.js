@@ -21,13 +21,29 @@ import {
 import HTMLEllipsis from "react-lines-ellipsis/lib/html";
 import FollowSuggestions from "../shared/FollowSuggestions";
 import OptionsDialog from "../shared/OptionsDialog";
+import { formatDateToNow } from "../../utils/formateDate";
 
 function FeedPost({ post, index }) {
   const classes = useFeedPostStyles();
   const [showCaption, setShowCaption] = useState(false);
   const [showOptionsDialog, setShowOptionsDialog] = useState(false);
-  const { media, id, likes, user, caption, comments } = post;
+  const {
+    media,
+    id,
+    likes,
+    user,
+    caption,
+    comments,
+    comments_aggregate,
+    likes_aggregate,
+    saved_posts,
+    location,
+    created_at,
+  } = post;
   const showFollowSuggestions = index === 1;
+
+  const likesCount = likes_aggregate.aggregate.count;
+  const commentsCount = comments_aggregate.aggregate.count;
 
   return (
     <>
@@ -37,7 +53,7 @@ function FeedPost({ post, index }) {
       >
         {/* Feed post header */}
         <div className={classes.postHeader}>
-          <UserCard user={user} />
+          <UserCard user={user} location={location} />
           <MoreIcon
             className={classes.MoreIcon}
             onClick={() => setShowOptionsDialog(true)}
@@ -58,7 +74,7 @@ function FeedPost({ post, index }) {
             <SaveButton />
           </div>
           <Typography className={classes.likes} variant="subtitle2">
-            <span>{likes === 1 ? "1 like" : `${likes} likes`}</span>
+            <span>{likesCount === 1 ? "1 like" : `${likesCount} likes`}</span>
           </Typography>
           <div className={showCaption ? classes.expanded : classes.collapsed}>
             <Link to={`/${user.username}`}>
@@ -100,7 +116,7 @@ function FeedPost({ post, index }) {
               variant="body2"
               component="div"
             >
-              View all {comments.length} comments
+              View all {commentsCount} comments
             </Typography>
           </Link>
           {comments.map((comment) => (
@@ -120,7 +136,7 @@ function FeedPost({ post, index }) {
             </div>
           ))}
           <Typography color="textSecondary" className={classes.datePosted}>
-            5 DAYS AGO
+            {formatDateToNow(created_at)}
           </Typography>
         </div>
         <Hidden xsDown>

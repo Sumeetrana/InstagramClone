@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useFeedPageStyles } from "../styles";
 import Layout from "../components/shared/Layout";
 import UserCard from "../components/shared/UserCard";
-import { getDefaultPost } from "../data";
+// import { getDefaultPost } from "../data";
 // import FeedPost from "../components/feed/FeedPost";
 import FeedSideSuggestions from "../components/feed/FeedSideSuggestions";
 import { Hidden } from "@material-ui/core";
@@ -27,14 +27,14 @@ function FeedPage() {
   const { data, loading, fetchMore } = useQuery(GET_FEED, { variables });
   const isPageBottom = usePageBottom();
 
-  function handleUpdateQuery(prev, { fetchMoreResult }) {
+  const handleUpdateQuery = React.useCallback((prev, { fetchMoreResult }) => {
     // console.log({ prev, fetchMoreResult });
     if (fetchMoreResult.posts.length === 0) {
       setEndOfFeed(true);
       return prev;
     }
     return { posts: [...prev.posts, ...fetchMoreResult.posts] };
-  }
+  }, []);
 
   React.useEffect(() => {
     if (!isPageBottom || !data) {
