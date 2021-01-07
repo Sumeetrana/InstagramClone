@@ -4,7 +4,7 @@ import { LogoLoadingIcon } from "../../icons";
 function LoadingScreen() {
   const classes = useLoadingScreenStyles();
 
-  let loading = true;
+  // let loading = true;
   return (
     <section className={classes.section}>
       <span>

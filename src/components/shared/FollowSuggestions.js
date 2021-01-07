@@ -14,7 +14,7 @@ import { SUGGEST_USERS } from "../../graphql/queries";
 
 function FollowSuggestions({ hideHeader }) {
   const classes = useFollowSuggestionsStyles();
-  const { followerIds, me } = React.useContext(UserContext);
+  const { followerIds } = React.useContext(UserContext);
   const variables = {
     limit: 20,
     followerIds,

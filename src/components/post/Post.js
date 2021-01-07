@@ -46,7 +46,7 @@ function Post({ postId }) {
   if (loading) {
     return <PostSkeleton />;
   }
-  console.log(data);
+  // console.log(data);
   const {
     media,
     id,
@@ -54,7 +54,6 @@ function Post({ postId }) {
     location,
     likes_aggregate,
     saved_posts,
-    user_id,
     user,
     caption,
     comments,
@@ -133,7 +132,7 @@ function Post({ postId }) {
 
 function AuthorCaption({ user, caption, createdAt }) {
   const classes = usePostStyles();
-  console.log(user.username);
+  // console.log(user.username);
   return (
     <div style={{ display: "flex" }}>
       <Avatar

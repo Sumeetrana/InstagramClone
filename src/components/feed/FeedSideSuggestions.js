@@ -11,7 +11,7 @@ import { UserContext } from "../../App";
 
 function FeedSideSuggestions() {
   const classes = useFeedSideSuggestionsStyles();
-  const { me, followerIds } = React.useContext(UserContext);
+  const { followerIds } = React.useContext(UserContext);
   const variables = {
     limit: 5,
     followerIds,

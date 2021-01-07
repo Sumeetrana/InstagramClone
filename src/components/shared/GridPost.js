@@ -6,7 +6,7 @@ import { useGridPostStyles } from "../../styles";
 function GridPost({ post }) {
   const history = useHistory();
   const classes = useGridPostStyles();
-  console.log(post);
+  // console.log(post);
   function handleOpenPostModal() {
     history.push({
       pathname: `/p/${post.id}`,
