@@ -146,7 +146,16 @@ export const CREATE_COMMENT = gql`
     insert_comments(
       objects: { content: $content, post_id: $postId, user_id: $userId }
     ) {
-      affected_rows
+      returning {
+        id
+        created_at
+        post_id
+        user_id
+        content
+        user {
+          username
+        }
+      }
     }
   }
 `;
