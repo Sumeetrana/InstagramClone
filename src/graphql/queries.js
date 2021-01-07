@@ -157,3 +157,25 @@ export const EXPLORE_POSTS = gql`
     }
   }
 `;
+
+export const GET_MORE_POSTS_FROM_USERS = gql`
+  query getMorePostsFromUsers($id: uuid!, $postId: uuid!) {
+    posts(
+      where: { user_id: { _eq: $id }, _not: { id: { _eq: $postId } } }
+      limit: 6
+    ) {
+      id
+      media
+      likes_aggregate {
+        aggregate {
+          count
+        }
+      }
+      comments_aggregate {
+        aggregate {
+          count
+        }
+      }
+    }
+  }
+`;

@@ -2,13 +2,18 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import { LoadingLargeIcon } from "../../icons";
 import { useMorePostsFromUserStyles } from "../../styles";
-import { getDefaultPost, defaultUser } from "../../data";
+// import { getDefaultPost, defaultUser } from "../../data";
 import GridPost from "../shared/GridPost";
 import { Link } from "react-router-dom";
+import { GET_MORE_POSTS_FROM_USERS } from "../../graphql/queries";
+import { useQuery } from "@apollo/react-hooks";
 
-function MorePostsFromUser() {
+function MorePostsFromUser({ user, postId }) {
   const classes = useMorePostsFromUserStyles();
-  let loading = false;
+  const { id } = user;
+  const variables = { id, postId };
+  const { data, loading } = useQuery(GET_MORE_POSTS_FROM_USERS, { variables });
+  // let loading = false;
   return (
     <div className={classes.container}>
       <Typography
@@ -19,8 +24,8 @@ function MorePostsFromUser() {
         className={classes.typography}
       >
         More posts from{" "}
-        <Link to={`/${defaultUser.username}`} className={classes.link}>
-          @{defaultUser.username}
+        <Link to={`/${user.username}`} className={classes.link}>
+          @{user.username}
         </Link>
       </Typography>
       {loading ? (
@@ -28,7 +33,7 @@ function MorePostsFromUser() {
       ) : (
         <article className={classes.article}>
           <div className={classes.postContainer}>
-            {Array.from({ length: 6 }, () => getDefaultPost()).map((post) => (
+            {data.posts.map((post) => (
               <GridPost key={post.id} post={post} />
             ))}
           </div>
