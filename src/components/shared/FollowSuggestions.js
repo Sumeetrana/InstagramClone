@@ -14,10 +14,11 @@ import { SUGGEST_USERS } from "../../graphql/queries";
 
 function FollowSuggestions({ hideHeader }) {
   const classes = useFollowSuggestionsStyles();
-  const { followerIds } = React.useContext(UserContext);
+  const { followerIds, followingIds } = React.useContext(UserContext);
   const variables = {
     limit: 20,
     followerIds,
+    followingIds,
     createdAt: "2021-01-07T04:24:45.208517+00:00",
     // createdAt: me.created_at,
   };

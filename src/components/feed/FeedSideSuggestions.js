@@ -11,10 +11,11 @@ import { UserContext } from "../../App";
 
 function FeedSideSuggestions() {
   const classes = useFeedSideSuggestionsStyles();
-  const { followerIds } = React.useContext(UserContext);
+  const { followerIds, followingIds } = React.useContext(UserContext);
   const variables = {
     limit: 5,
     followerIds,
+    followingIds,
     createdAt: "2021-01-07T04:24:45.208517+00:00",
     // createdAt: me.created_at
   };

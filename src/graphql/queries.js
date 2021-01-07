@@ -109,11 +109,35 @@ export const GET_USER_PROFILE = gql`
 `;
 
 // suggest users from followers & also users creted around the same time
+// export const SUGGEST_USERS = gql`
+//   query suggestUsers(
+//     $limit: Int!
+//     $followerIds: [uuid!]!
+//     $createdAt: timestamptz!
+//   ) {
+//     users(
+//       limit: $limit
+//       where: {
+//         _or: [
+//           { id: { _in: $followerIds } }
+//           { created_at: { _gt: $createdAt } }
+//         ]
+//       }
+//     ) {
+//       id
+//       username
+//       name
+//       profile_image
+//     }
+//   }
+// `;
+
 export const SUGGEST_USERS = gql`
   query suggestUsers(
     $limit: Int!
     $followerIds: [uuid!]!
     $createdAt: timestamptz!
+    $followingIds: [uuid!]!
   ) {
     users(
       limit: $limit
@@ -122,6 +146,7 @@ export const SUGGEST_USERS = gql`
           { id: { _in: $followerIds } }
           { created_at: { _gt: $createdAt } }
         ]
+        _and: { id: { _nin: $followingIds } }
       }
     ) {
       id
