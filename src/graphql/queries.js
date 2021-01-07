@@ -181,8 +181,12 @@ export const GET_MORE_POSTS_FROM_USERS = gql`
 `;
 
 export const GET_FEED = gql`
-  query getFeed($limit: Int!, $feedIds: [uuid!]!, $lastTimestamp: $timestamptz) {
-    posts(limit: $limit, where: {user_id: {_in: $feedIds}, created_at: {_lt: $lastTimestamp}}, order_by: {created_at: desc}) {
+  query getFeed($limit: Int!, $feedIds: [uuid!]!, $lastTimestamp: timestamptz) {
+    posts(
+      limit: $limit
+      where: { user_id: { _in: $feedIds }, created_at: { _lt: $lastTimestamp } }
+      order_by: { created_at: desc }
+    ) {
       id
       caption
       created_at
@@ -212,7 +216,7 @@ export const GET_FEED = gql`
           count
         }
       }
-      comments(order_by: {created_at: desc}, limit: 2) {
+      comments(order_by: { created_at: desc }, limit: 2) {
         id
         content
         created_at
