@@ -142,22 +142,22 @@ function AuthorCaption({ user, caption, createdAt }) {
         style={{ marginRight: "14px", width: "32px", height: "32px" }}
       />
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <Link to={user.username}>
-          <Typography
-            variant="subtitle2"
-            component="span"
-            className={classes.username}
-          >
-            {user.username}
-          </Typography>
-          <Typography
-            variant="body2"
-            component="span"
-            className={classes.postCaption}
-            style={{ paddingLeft: 0 }}
-            dangerouslySetInnerHTML={{ __html: caption }}
-          />
-        </Link>
+        {/* <Link to={user.username}> */}
+        <Typography
+          variant="subtitle2"
+          component="span"
+          className={classes.username}
+        >
+          {user.username}
+        </Typography>
+        <Typography
+          variant="body2"
+          component="span"
+          className={classes.postCaption}
+          style={{ paddingLeft: 0 }}
+          dangerouslySetInnerHTML={{ __html: caption }}
+        />
+        {/* </Link> */}
         <Typography
           style={{ marginTop: 16, marginBottom: 4, display: "inline-block" }}
           color="textSecondary"
