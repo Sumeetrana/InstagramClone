@@ -33,6 +33,7 @@ import {
   CREATE_COMMENT,
 } from "../../graphql/mutations";
 import { formateDateToNowShort, formatPostDate } from "../../utils/formateDate";
+import Img from "react-graceful-image";
 
 function Post({ postId }) {
   const classes = usePostStyles();
@@ -73,7 +74,7 @@ function Post({ postId }) {
         </div>
         {/* post image */}
         <div className={classes.postImage}>
-          <img src={media} alt="Post media" className={classes.image} />
+          <Img src={media} alt="Post media" className={classes.image} />
         </div>
         {/* Post Buttons */}
         <div className={classes.postButtonsWrapper}>
@@ -132,6 +133,7 @@ function Post({ postId }) {
 
 function AuthorCaption({ user, caption, createdAt }) {
   const classes = usePostStyles();
+  console.log(user.username);
   return (
     <div style={{ display: "flex" }}>
       <Avatar
