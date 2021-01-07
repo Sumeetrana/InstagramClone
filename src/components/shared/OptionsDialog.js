@@ -1,10 +1,10 @@
 import { Button, Dialog, Divider, Zoom } from "@material-ui/core";
 import React from "react";
 import { useOptionsDialogStyles } from "../../styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { defaultPost } from "../../data";
 import { UserContext } from "../../App";
-import { UNFOLLOW_USER } from "../../graphql/mutations";
+import { DELETE_POST, UNFOLLOW_USER } from "../../graphql/mutations";
 import { useMutation } from "@apollo/react-hooks";
 
 function OptionsDialog({ onClose, postId, authorId }) {
@@ -16,8 +16,19 @@ function OptionsDialog({ onClose, postId, authorId }) {
   const isFollowing = followingIds.some((id) => id === authorId);
   const isUnrelatedUser = !isOwner && !isFollowing;
   const [unfollowUser] = useMutation(UNFOLLOW_USER);
+  const [deletePost] = useMutation(DELETE_POST);
+  const history = useHistory();
 
-  function handleDeletePost() {}
+  async function handleDeletePost() {
+    const variables = {
+      postId,
+      userId: currentUserId,
+    };
+    await deletePost({ variables });
+    onClose();
+    history.push("/");
+    window.location.reload();
+  }
 
   function handleUnfollowUser() {
     const variables = {
@@ -38,7 +49,9 @@ function OptionsDialog({ onClose, postId, authorId }) {
       TransitionComponent={Zoom}
     >
       {!isUnrelatedUser && (
-        <Button className={classes.redButton}>Unfollow</Button>
+        <Button className={classes.redButton} onClick={onClick}>
+          {buttonText}
+        </Button>
       )}
       <Divider />
       <Button className={classes.button}>
