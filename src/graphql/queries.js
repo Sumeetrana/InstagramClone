@@ -140,7 +140,7 @@ export const EXPLORE_POSTS = gql`
         likes_aggregate: { count: desc }
         comments_aggregate: { count: desc }
       }
-      where: { id: { _nin: $followingIds } }
+      where: { user_id: { _nin: $followingIds } }
     ) {
       id
       media

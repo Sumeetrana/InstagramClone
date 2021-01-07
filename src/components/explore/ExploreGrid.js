@@ -12,7 +12,9 @@ function ExploreGrid() {
   const classes = useExploreGridStyles();
   const { followingIds } = React.useContext(UserContext);
   const variables = { followingIds };
+  console.log(followingIds);
   const { data, loading } = useQuery(EXPLORE_POSTS, { variables });
+  console.log(data);
   return (
     <>
       <Typography
